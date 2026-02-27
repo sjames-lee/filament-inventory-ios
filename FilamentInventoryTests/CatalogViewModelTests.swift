@@ -26,7 +26,6 @@ final class CatalogViewModelTests: XCTestCase {
         XCTAssertTrue(vm.selectedMaterials.isEmpty)
         XCTAssertTrue(vm.selectedBrands.isEmpty)
         XCTAssertTrue(vm.selectedColorFamilies.isEmpty)
-        XCTAssertTrue(vm.selectedStatuses.isEmpty)
         XCTAssertFalse(vm.showFavoritesOnly)
         XCTAssertFalse(vm.showFilterSheet)
         XCTAssertFalse(vm.showAddSheet)
@@ -62,14 +61,6 @@ final class CatalogViewModelTests: XCTestCase {
         XCTAssertFalse(vm.selectedColorFamilies.contains("Red"))
     }
 
-    func testToggleStatus_addsAndRemoves() {
-        vm.toggleStatus("low")
-        XCTAssertTrue(vm.selectedStatuses.contains("low"))
-
-        vm.toggleStatus("low")
-        XCTAssertFalse(vm.selectedStatuses.contains("low"))
-    }
-
     func testToggle_multipleValuesInSameCategory() {
         vm.toggleMaterial("PLA")
         vm.toggleMaterial("PETG")
@@ -94,9 +85,8 @@ final class CatalogViewModelTests: XCTestCase {
         vm.toggleMaterial("PLA")
         vm.toggleBrand("Hatchbox")
         vm.toggleColorFamily("Red")
-        vm.toggleStatus("low")
         vm.showFavoritesOnly = true
-        XCTAssertEqual(vm.activeFilterCount, 5)
+        XCTAssertEqual(vm.activeFilterCount, 4)
     }
 
     // MARK: - clearAllFilters
@@ -105,7 +95,6 @@ final class CatalogViewModelTests: XCTestCase {
         vm.toggleMaterial("PLA")
         vm.toggleBrand("Hatchbox")
         vm.toggleColorFamily("Red")
-        vm.toggleStatus("low")
         vm.showFavoritesOnly = true
 
         vm.clearAllFilters()
@@ -113,7 +102,6 @@ final class CatalogViewModelTests: XCTestCase {
         XCTAssertTrue(vm.selectedMaterials.isEmpty)
         XCTAssertTrue(vm.selectedBrands.isEmpty)
         XCTAssertTrue(vm.selectedColorFamilies.isEmpty)
-        XCTAssertTrue(vm.selectedStatuses.isEmpty)
         XCTAssertFalse(vm.showFavoritesOnly)
         XCTAssertFalse(vm.hasActiveFilters)
         XCTAssertEqual(vm.activeFilterCount, 0)
@@ -137,16 +125,16 @@ final class CatalogViewModelTests: XCTestCase {
         let result = vm.filteredAndSorted(filaments)
 
         XCTAssertEqual(result.count, 5)
-        // Newest first: Flex Green TPU was created last
-        XCTAssertEqual(result.first?.name, "Flex Green TPU")
-        XCTAssertEqual(result.last?.name, "Matte Black PLA")
+        // Newest first: Polymaker TPU - Neon Green was created last
+        XCTAssertEqual(result.first?.displayName, "Polymaker TPU - Neon Green")
+        XCTAssertEqual(result.last?.displayName, "Hatchbox PLA - Matte Black")
     }
 
     func testFilteredAndSorted_withSearch() {
         vm.searchText = "Blue"
         let result = vm.filteredAndSorted(filaments)
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Ocean Blue PETG")
+        XCTAssertEqual(result.first?.displayName, "Polymaker PETG - Ocean Blue")
     }
 
     func testFilteredAndSorted_withMaterialFilter() {
@@ -161,15 +149,15 @@ final class CatalogViewModelTests: XCTestCase {
     func testSort_nameAscending() {
         vm.sortOption = .nameAsc
         let result = vm.filteredAndSorted(filaments)
-        let names = result.map(\.name)
-        XCTAssertEqual(names, names.sorted())
+        let names = result.map(\.displayName)
+        XCTAssertEqual(names, names.sorted { $0.localizedCompare($1) == .orderedAscending })
     }
 
     func testSort_nameDescending() {
         vm.sortOption = .nameDesc
         let result = vm.filteredAndSorted(filaments)
-        let names = result.map(\.name)
-        XCTAssertEqual(names, names.sorted().reversed())
+        let names = result.map(\.displayName)
+        XCTAssertEqual(names, names.sorted { $0.localizedCompare($1) == .orderedDescending })
     }
 
     func testSort_brandAscending() {
@@ -226,8 +214,8 @@ final class CatalogViewModelTests: XCTestCase {
 
         XCTAssertEqual(result.count, 2)
         XCTAssertTrue(result.allSatisfy { $0.material == "PLA" })
-        // Snow White PLA ($22.99) before Matte Black PLA ($24.99)
-        XCTAssertEqual(result.first?.name, "Snow White PLA")
-        XCTAssertEqual(result.last?.name, "Matte Black PLA")
+        // Hatchbox PLA - Snow White ($22.99) before Hatchbox PLA - Matte Black ($24.99)
+        XCTAssertEqual(result.first?.displayName, "Hatchbox PLA - Snow White")
+        XCTAssertEqual(result.last?.displayName, "Hatchbox PLA - Matte Black")
     }
 }

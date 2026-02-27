@@ -5,17 +5,16 @@ struct FilterState: Equatable {
     var materials: Set<String> = []
     var brands: Set<String> = []
     var colorFamilies: Set<String> = []
-    var statuses: Set<String> = []
     var favoritesOnly: Bool = false
 
     var isEmpty: Bool {
         materials.isEmpty && brands.isEmpty && colorFamilies.isEmpty &&
-        statuses.isEmpty && !favoritesOnly
+        !favoritesOnly
     }
 
     var activeCount: Int {
         materials.count + brands.count + colorFamilies.count +
-        statuses.count + (favoritesOnly ? 1 : 0)
+        (favoritesOnly ? 1 : 0)
     }
 }
 
@@ -31,7 +30,6 @@ enum FilamentFilter {
         if !search.isEmpty {
             let query = search.lowercased()
             result = result.filter { f in
-                f.name.localizedCaseInsensitiveContains(query) ||
                 f.brand.localizedCaseInsensitiveContains(query) ||
                 f.colorName.localizedCaseInsensitiveContains(query) ||
                 f.material.localizedCaseInsensitiveContains(query) ||
@@ -52,11 +50,6 @@ enum FilamentFilter {
         // Color family filter
         if !filters.colorFamilies.isEmpty {
             result = result.filter { filters.colorFamilies.contains($0.colorFamily) }
-        }
-
-        // Status filter
-        if !filters.statuses.isEmpty {
-            result = result.filter { filters.statuses.contains($0.status) }
         }
 
         // Favorites

@@ -3,7 +3,6 @@ import Foundation
 
 enum TestHelpers {
     static func makeFilament(
-        name: String = "Test Filament",
         brand: String = "Hatchbox",
         material: String = "PLA",
         colorName: String = "Red",
@@ -21,12 +20,10 @@ enum TestHelpers {
         purchaseUrl: String? = nil,
         notes: String? = nil,
         tags: String = "",
-        status: String = "in_stock",
         favorite: Bool = false,
         createdAt: Date? = nil
     ) -> Filament {
         let f = Filament(
-            name: name,
             brand: brand,
             material: material,
             colorName: colorName,
@@ -44,7 +41,6 @@ enum TestHelpers {
             purchaseUrl: purchaseUrl,
             notes: notes,
             tags: tags,
-            status: status,
             favorite: favorite
         )
         if let createdAt {
@@ -58,7 +54,6 @@ enum TestHelpers {
         let now = Date()
         return [
             makeFilament(
-                name: "Matte Black PLA",
                 brand: "Hatchbox",
                 material: "PLA",
                 colorName: "Matte Black",
@@ -66,12 +61,10 @@ enum TestHelpers {
                 quantity: 3,
                 price: 24.99,
                 tags: "matte,basic",
-                status: "in_stock",
                 favorite: true,
                 createdAt: now.addingTimeInterval(-400)
             ),
             makeFilament(
-                name: "Ocean Blue PETG",
                 brand: "Polymaker",
                 material: "PETG",
                 colorName: "Ocean Blue",
@@ -79,11 +72,9 @@ enum TestHelpers {
                 quantity: 1,
                 price: 29.99,
                 tags: "translucent",
-                status: "low",
                 createdAt: now.addingTimeInterval(-300)
             ),
             makeFilament(
-                name: "Fire Red ABS",
                 brand: "eSUN",
                 material: "ABS",
                 colorName: "Fire Red",
@@ -91,11 +82,9 @@ enum TestHelpers {
                 quantity: 2,
                 price: 19.99,
                 tags: "heat-resistant",
-                status: "in_stock",
                 createdAt: now.addingTimeInterval(-200)
             ),
             makeFilament(
-                name: "Snow White PLA",
                 brand: "Hatchbox",
                 material: "PLA",
                 colorName: "Snow White",
@@ -103,11 +92,9 @@ enum TestHelpers {
                 quantity: 0,
                 price: 22.99,
                 tags: "basic",
-                status: "empty",
                 createdAt: now.addingTimeInterval(-100)
             ),
             makeFilament(
-                name: "Flex Green TPU",
                 brand: "Polymaker",
                 material: "TPU",
                 colorName: "Neon Green",
@@ -115,7 +102,6 @@ enum TestHelpers {
                 quantity: 1,
                 price: nil,
                 tags: "flexible,special",
-                status: "in_stock",
                 favorite: true,
                 createdAt: now
             ),

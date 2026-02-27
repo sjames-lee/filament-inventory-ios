@@ -1,29 +1,5 @@
 import SwiftUI
 
-enum FilamentStatus: String, CaseIterable, Identifiable {
-    case inStock = "in_stock"
-    case low = "low"
-    case empty = "empty"
-
-    var id: String { rawValue }
-
-    var label: String {
-        switch self {
-        case .inStock: return "In Stock"
-        case .low: return "Low Stock"
-        case .empty: return "Empty"
-        }
-    }
-
-    var color: Color {
-        switch self {
-        case .inStock: return .green
-        case .low: return Color(.systemOrange)
-        case .empty: return .red
-        }
-    }
-}
-
 enum SortOption: String, CaseIterable, Identifiable {
     case nameAsc = "Name (A-Z)"
     case nameDesc = "Name (Z-A)"
@@ -39,8 +15,8 @@ enum SortOption: String, CaseIterable, Identifiable {
 
     var descriptor: SortDescriptor<Filament> {
         switch self {
-        case .nameAsc: return SortDescriptor(\.name, order: .forward)
-        case .nameDesc: return SortDescriptor(\.name, order: .reverse)
+        case .nameAsc: return SortDescriptor(\.brand, order: .forward)
+        case .nameDesc: return SortDescriptor(\.brand, order: .reverse)
         case .brandAsc: return SortDescriptor(\.brand, order: .forward)
         case .priceAsc: return SortDescriptor(\.price, order: .forward)
         case .priceDesc: return SortDescriptor(\.price, order: .reverse)

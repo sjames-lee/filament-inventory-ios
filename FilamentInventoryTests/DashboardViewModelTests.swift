@@ -94,27 +94,6 @@ final class DashboardViewModelTests: XCTestCase {
         XCTAssertEqual(vm.uniqueBrands([]), 0)
     }
 
-    // MARK: - countByStatus
-
-    func testCountByStatus_inStock() {
-        // Matte Black PLA, Fire Red ABS, Flex Green TPU = 3
-        XCTAssertEqual(vm.countByStatus(filaments, status: .inStock), 3)
-    }
-
-    func testCountByStatus_low() {
-        // Ocean Blue PETG = 1
-        XCTAssertEqual(vm.countByStatus(filaments, status: .low), 1)
-    }
-
-    func testCountByStatus_empty() {
-        // Snow White PLA = 1
-        XCTAssertEqual(vm.countByStatus(filaments, status: .empty), 1)
-    }
-
-    func testCountByStatus_emptyArray() {
-        XCTAssertEqual(vm.countByStatus([], status: .inStock), 0)
-    }
-
     // MARK: - materialCounts
 
     func testMaterialCounts_sortedByCountDescending() {
@@ -166,54 +145,5 @@ final class DashboardViewModelTests: XCTestCase {
     func testBrandCounts_emptyArray() {
         let counts = vm.brandCounts([])
         XCTAssertTrue(counts.isEmpty)
-    }
-
-    // MARK: - needsAttention
-
-    func testNeedsAttention_returnsLowAndEmpty() {
-        let result = vm.needsAttention(filaments)
-        XCTAssertEqual(result.count, 2)
-        XCTAssertTrue(result.allSatisfy { $0.status == "low" || $0.status == "empty" })
-    }
-
-    func testNeedsAttention_lowComesBeforeEmpty() {
-        let result = vm.needsAttention(filaments)
-        XCTAssertEqual(result[0].status, "low")
-        XCTAssertEqual(result[1].status, "empty")
-    }
-
-    func testNeedsAttention_excludesInStock() {
-        let result = vm.needsAttention(filaments)
-        XCTAssertTrue(result.allSatisfy { $0.status != "in_stock" })
-    }
-
-    func testNeedsAttention_emptyArray() {
-        let result = vm.needsAttention([])
-        XCTAssertTrue(result.isEmpty)
-    }
-
-    func testNeedsAttention_allInStock() {
-        let items = [
-            TestHelpers.makeFilament(status: "in_stock"),
-            TestHelpers.makeFilament(status: "in_stock"),
-        ]
-        let result = vm.needsAttention(items)
-        XCTAssertTrue(result.isEmpty)
-    }
-
-    func testNeedsAttention_multipleLowSorted() {
-        let items = [
-            TestHelpers.makeFilament(name: "A", status: "empty"),
-            TestHelpers.makeFilament(name: "B", status: "low"),
-            TestHelpers.makeFilament(name: "C", status: "empty"),
-            TestHelpers.makeFilament(name: "D", status: "low"),
-        ]
-        let result = vm.needsAttention(items)
-        XCTAssertEqual(result.count, 4)
-        // Low items first, then empty
-        XCTAssertEqual(result[0].status, "low")
-        XCTAssertEqual(result[1].status, "low")
-        XCTAssertEqual(result[2].status, "empty")
-        XCTAssertEqual(result[3].status, "empty")
     }
 }

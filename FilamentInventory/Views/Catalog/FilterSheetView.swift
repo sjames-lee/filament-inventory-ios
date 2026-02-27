@@ -11,7 +11,6 @@ struct FilterSheetView: View {
                 materialSection
                 brandSection
                 colorFamilySection
-                statusSection
             }
             .navigationTitle("Filters")
             .navigationBarTitleDisplayMode(.inline)
@@ -112,23 +111,4 @@ struct FilterSheetView: View {
         }
     }
 
-    private var statusSection: some View {
-        Section("Status") {
-            ForEach(FilamentStatus.allCases) { status in
-                Button {
-                    viewModel.toggleStatus(status.rawValue)
-                } label: {
-                    HStack {
-                        StockIndicatorView(status: status)
-                        Spacer()
-                        if viewModel.selectedStatuses.contains(status.rawValue) {
-                            Image(systemName: "checkmark")
-                                .foregroundStyle(.blue)
-                        }
-                    }
-                }
-                .foregroundStyle(.primary)
-            }
-        }
-    }
 }

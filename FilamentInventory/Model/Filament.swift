@@ -4,7 +4,6 @@ import Foundation
 @Model
 final class Filament {
     var id: UUID
-    var name: String
     var brand: String
     var material: String
 
@@ -28,14 +27,16 @@ final class Filament {
     var notes: String?
     var tags: String
     var imageUrl: String?
-    var status: String
     var favorite: Bool
 
     var createdAt: Date
     var updatedAt: Date
 
+    var displayName: String {
+        colorName.isEmpty ? "\(brand) \(material)" : "\(brand) \(material) - \(colorName)"
+    }
+
     init(
-        name: String,
         brand: String,
         material: String,
         colorName: String,
@@ -54,11 +55,9 @@ final class Filament {
         notes: String? = nil,
         tags: String = "",
         imageUrl: String? = nil,
-        status: String = "in_stock",
         favorite: Bool = false
     ) {
         self.id = UUID()
-        self.name = name
         self.brand = brand
         self.material = material
         self.colorName = colorName
@@ -77,7 +76,6 @@ final class Filament {
         self.notes = notes
         self.tags = tags
         self.imageUrl = imageUrl
-        self.status = status
         self.favorite = favorite
         self.createdAt = Date()
         self.updatedAt = Date()
@@ -87,10 +85,6 @@ final class Filament {
         tags.split(separator: ",")
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
-    }
-
-    var statusEnum: FilamentStatus {
-        FilamentStatus(rawValue: status) ?? .inStock
     }
 
     var formattedPrice: String {

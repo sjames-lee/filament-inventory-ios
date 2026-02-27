@@ -36,7 +36,7 @@ struct FilamentDetailView: View {
             Button("Delete", role: .destructive) { deleteFilament() }
             Button("Cancel", role: .cancel) {}
         } message: {
-            Text("Are you sure you want to delete \"\(filament.name)\"? This action cannot be undone.")
+            Text("Are you sure you want to delete \"\(filament.displayName)\"? This action cannot be undone.")
         }
         .sheet(isPresented: $showEditSheet) {
             FilamentFormView(filament: filament)
@@ -69,17 +69,10 @@ struct FilamentDetailView: View {
         VStack(alignment: .leading, spacing: 20) {
             // Title section
             VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 8) {
-                    MaterialBadgeView(material: filament.material)
-                    StockIndicatorView(status: filament.statusEnum)
-                }
+                MaterialBadgeView(material: filament.material)
 
-                Text(filament.name)
+                Text(filament.displayName)
                     .font(.title2.weight(.bold))
-
-                Text(filament.brand)
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
             }
 
             Divider()

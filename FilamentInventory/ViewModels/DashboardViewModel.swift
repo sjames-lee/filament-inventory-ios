@@ -18,10 +18,6 @@ final class DashboardViewModel {
         Set(filaments.map(\.brand)).count
     }
 
-    func countByStatus(_ filaments: [Filament], status: FilamentStatus) -> Int {
-        filaments.filter { $0.status == status.rawValue }.count
-    }
-
     func materialCounts(_ filaments: [Filament]) -> [(label: String, count: Int)] {
         var counts: [String: Int] = [:]
         for f in filaments { counts[f.material, default: 0] += f.quantity }
@@ -36,17 +32,4 @@ final class DashboardViewModel {
             .map { (label: $0.key, count: $0.value) }
     }
 
-    func needsAttention(_ filaments: [Filament]) -> [Filament] {
-        filaments
-            .filter { $0.status == "low" || $0.status == "empty" }
-            .sorted { statusOrder($0.status) < statusOrder($1.status) }
-    }
-
-    private func statusOrder(_ status: String) -> Int {
-        switch status {
-        case "low": return 0
-        case "empty": return 1
-        default: return 2
-        }
-    }
 }

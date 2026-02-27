@@ -18,8 +18,6 @@ struct DashboardView: View {
                         emptyState
                     } else {
                         statsGrid
-                        statusOverview
-                        needsAttentionCard
                         byMaterialCard
                         byBrandCard
                         colorPaletteCard
@@ -54,45 +52,6 @@ struct DashboardView: View {
                 value: "\(viewModel.uniqueMaterials(filaments))",
                 subtitle: "\(viewModel.uniqueBrands(filaments)) brands"
             )
-        }
-    }
-
-    // MARK: - Status Overview
-
-    private var statusOverview: some View {
-        HStack(spacing: 12) {
-            ForEach(FilamentStatus.allCases) { status in
-                VStack(spacing: 4) {
-                    Text("\(viewModel.countByStatus(filaments, status: status))")
-                        .font(.title3.weight(.bold))
-                    HStack(spacing: 4) {
-                        Circle()
-                            .fill(status.color)
-                            .frame(width: 8, height: 8)
-                        Text(status.label)
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 12)
-                .background(Color(.systemBackground))
-                .clipShape(RoundedRectangle(cornerRadius: 12))
-                .shadow(color: .black.opacity(0.05), radius: 2, x: 0, y: 1)
-            }
-        }
-    }
-
-    // MARK: - Needs Attention
-
-    private var needsAttentionCard: some View {
-        let attention = viewModel.needsAttention(filaments)
-        return Group {
-            if !attention.isEmpty {
-                DashboardCard(title: "Needs Attention") {
-                    NeedsAttentionListView(filaments: attention)
-                }
-            }
         }
     }
 

@@ -9,11 +9,6 @@ struct CatalogView: View {
         viewModel.filteredAndSorted(allFilaments)
     }
 
-    private let columns = [
-        GridItem(.flexible(), spacing: 12),
-        GridItem(.flexible(), spacing: 12)
-    ]
-
     var body: some View {
         NavigationStack {
             Group {
@@ -59,15 +54,17 @@ struct CatalogView: View {
                     .foregroundStyle(.secondary)
                     .padding(.horizontal)
 
-                LazyVGrid(columns: columns, spacing: 12) {
+                LazyVStack(spacing: 0) {
                     ForEach(filaments, id: \.id) { filament in
                         NavigationLink(value: filament.id) {
-                            FilamentCard(filament: filament)
+                            FilamentRowView(filament: filament)
                         }
                         .buttonStyle(.plain)
+
+                        Divider()
+                            .padding(.leading, 72)
                     }
                 }
-                .padding(.horizontal)
             }
             .padding(.vertical)
         }

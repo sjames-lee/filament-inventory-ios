@@ -25,11 +25,6 @@ final class FilterStateTests: XCTestCase {
         XCTAssertFalse(state.isEmpty)
     }
 
-    func testIsEmpty_withStatus() {
-        let state = FilterState(statuses: ["low"])
-        XCTAssertFalse(state.isEmpty)
-    }
-
     func testIsEmpty_withFavoritesOnly() {
         let state = FilterState(favoritesOnly: true)
         XCTAssertFalse(state.isEmpty)
@@ -47,11 +42,10 @@ final class FilterStateTests: XCTestCase {
             materials: ["PLA", "PETG"],
             brands: ["Hatchbox"],
             colorFamilies: ["Red", "Blue", "Green"],
-            statuses: ["low"],
             favoritesOnly: true
         )
-        // 2 + 1 + 3 + 1 + 1 = 8
-        XCTAssertEqual(state.activeCount, 8)
+        // 2 + 1 + 3 + 1 = 7
+        XCTAssertEqual(state.activeCount, 7)
     }
 
     func testActiveCount_favoritesOnlyCountsAsOne() {
@@ -85,10 +79,10 @@ final class FilamentFilterTests: XCTestCase {
 
     // MARK: - Search
 
-    func testSearch_matchesName() {
+    func testSearch_matchesColorName() {
         let result = FilamentFilter.apply(to: filaments, search: "Ocean", filters: FilterState())
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Ocean Blue PETG")
+        XCTAssertEqual(result.first?.displayName, "Polymaker PETG - Ocean Blue")
     }
 
     func testSearch_matchesBrand() {
@@ -96,10 +90,10 @@ final class FilamentFilterTests: XCTestCase {
         XCTAssertEqual(result.count, 2)
     }
 
-    func testSearch_matchesColorName() {
+    func testSearch_matchesNeonColorName() {
         let result = FilamentFilter.apply(to: filaments, search: "Neon", filters: FilterState())
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Flex Green TPU")
+        XCTAssertEqual(result.first?.displayName, "Polymaker TPU - Neon Green")
     }
 
     func testSearch_matchesMaterial() {
@@ -110,7 +104,7 @@ final class FilamentFilterTests: XCTestCase {
     func testSearch_matchesTags() {
         let result = FilamentFilter.apply(to: filaments, search: "flexible", filters: FilterState())
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Flex Green TPU")
+        XCTAssertEqual(result.first?.displayName, "Polymaker TPU - Neon Green")
     }
 
     func testSearch_isCaseInsensitive() {
@@ -131,7 +125,7 @@ final class FilamentFilterTests: XCTestCase {
     func testSearch_partialMatch() {
         let result = FilamentFilter.apply(to: filaments, search: "Matt", filters: FilterState())
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Matte Black PLA")
+        XCTAssertEqual(result.first?.displayName, "Hatchbox PLA - Matte Black")
     }
 
     // MARK: - Material filter
@@ -177,26 +171,11 @@ final class FilamentFilterTests: XCTestCase {
         let filters = FilterState(colorFamilies: ["Blue"])
         let result = FilamentFilter.apply(to: filaments, search: "", filters: filters)
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Ocean Blue PETG")
+        XCTAssertEqual(result.first?.displayName, "Polymaker PETG - Ocean Blue")
     }
 
     func testFilter_multipleColorFamilies() {
         let filters = FilterState(colorFamilies: ["Black", "White"])
-        let result = FilamentFilter.apply(to: filaments, search: "", filters: filters)
-        XCTAssertEqual(result.count, 2)
-    }
-
-    // MARK: - Status filter
-
-    func testFilter_singleStatus() {
-        let filters = FilterState(statuses: ["in_stock"])
-        let result = FilamentFilter.apply(to: filaments, search: "", filters: filters)
-        XCTAssertEqual(result.count, 3)
-        XCTAssertTrue(result.allSatisfy { $0.status == "in_stock" })
-    }
-
-    func testFilter_multipleStatuses() {
-        let filters = FilterState(statuses: ["low", "empty"])
         let result = FilamentFilter.apply(to: filaments, search: "", filters: filters)
         XCTAssertEqual(result.count, 2)
     }
@@ -223,14 +202,14 @@ final class FilamentFilterTests: XCTestCase {
         let filters = FilterState(materials: ["PLA"])
         let result = FilamentFilter.apply(to: filaments, search: "Black", filters: filters)
         XCTAssertEqual(result.count, 1)
-        XCTAssertEqual(result.first?.name, "Matte Black PLA")
+        XCTAssertEqual(result.first?.displayName, "Hatchbox PLA - Matte Black")
     }
 
-    func testFilter_searchPlusStatusPlusFavorites() {
-        let filters = FilterState(statuses: ["in_stock"], favoritesOnly: true)
-        let result = FilamentFilter.apply(to: filaments, search: "", filters: filters)
-        XCTAssertEqual(result.count, 2) // Matte Black PLA + Flex Green TPU
-        XCTAssertTrue(result.allSatisfy { $0.favorite && $0.status == "in_stock" })
+    func testFilter_favoritesWithSearch() {
+        let filters = FilterState(favoritesOnly: true)
+        let result = FilamentFilter.apply(to: filaments, search: "PLA", filters: filters)
+        XCTAssertEqual(result.count, 1)
+        XCTAssertEqual(result.first?.displayName, "Hatchbox PLA - Matte Black")
     }
 
     func testFilter_allFiltersCombined_noMatch() {
@@ -238,7 +217,6 @@ final class FilamentFilterTests: XCTestCase {
             materials: ["PLA"],
             brands: ["eSUN"],
             colorFamilies: ["Black"],
-            statuses: ["in_stock"],
             favoritesOnly: true
         )
         let result = FilamentFilter.apply(to: filaments, search: "", filters: filters)

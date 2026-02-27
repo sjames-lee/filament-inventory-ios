@@ -7,10 +7,8 @@ struct FilamentFormView: View {
 
     let filament: Filament?
 
-    @State private var name = ""
     @State private var brand = Constants.brands[0]
     @State private var material = Constants.materials[0]
-    @State private var status = FilamentStatus.inStock.rawValue
     @State private var colorName = ""
     @State private var colorHex = "#3B82F6"
     @State private var colorFamily = Constants.colorFamilies[0]
@@ -23,7 +21,7 @@ struct FilamentFormView: View {
     @State private var printTempMax = ""
     @State private var bedTempMin = ""
     @State private var bedTempMax = ""
-    @State private var price = ""
+    @State private var price = "20"
     @State private var purchaseUrl = ""
     @State private var tags = ""
     @State private var notes = ""
@@ -36,8 +34,6 @@ struct FilamentFormView: View {
     }
 
     private var isValid: Bool {
-        !name.trimmingCharacters(in: .whitespaces).isEmpty &&
-        !colorName.trimmingCharacters(in: .whitespaces).isEmpty &&
         colorHex.range(of: #"^#[0-9a-fA-F]{6}$"#, options: .regularExpression) != nil
     }
 
@@ -64,10 +60,10 @@ struct FilamentFormView: View {
                         .disabled(!isValid)
                 }
             }
-            .alert("Missing Required Fields", isPresented: $showValidationError) {
+            .alert("Invalid Color", isPresented: $showValidationError) {
                 Button("OK", role: .cancel) {}
             } message: {
-                Text("Please fill in name, color name, and a valid hex color.")
+                Text("Please enter a valid hex color (e.g. #3B82F6).")
             }
             .onAppear {
                 populateFromFilament()
@@ -90,21 +86,12 @@ struct FilamentFormView: View {
 
     private var basicInfoSection: some View {
         Section("Basic Information") {
-            TextField("Filament name", text: $name)
-                .textInputAutocapitalization(.words)
-
             Picker("Brand", selection: $brand) {
                 ForEach(Constants.brands, id: \.self) { Text($0) }
             }
 
             Picker("Material", selection: $material) {
                 ForEach(availableMaterials, id: \.self) { Text($0) }
-            }
-
-            Picker("Status", selection: $status) {
-                ForEach(FilamentStatus.allCases) { s in
-                    Text(s.label).tag(s.rawValue)
-                }
             }
         }
     }
@@ -241,10 +228,8 @@ struct FilamentFormView: View {
 
     private func populateFromFilament() {
         guard let f = filament else { return }
-        name = f.name
         brand = f.brand
         material = f.material
-        status = f.status
         colorName = f.colorName
         colorHex = f.colorHex
         colorFamily = f.colorFamily
@@ -289,7 +274,6 @@ struct FilamentFormView: View {
             f.updatedAt = Date()
         } else {
             let newFilament = Filament(
-                name: name.trimmingCharacters(in: .whitespaces),
                 brand: brand,
                 material: material,
                 colorName: colorName.trimmingCharacters(in: .whitespaces),
@@ -307,7 +291,6 @@ struct FilamentFormView: View {
                 purchaseUrl: purchaseUrl.isEmpty ? nil : purchaseUrl,
                 notes: notes.isEmpty ? nil : notes,
                 tags: tags,
-                status: status,
                 favorite: favorite
             )
             modelContext.insert(newFilament)
@@ -318,10 +301,8 @@ struct FilamentFormView: View {
     }
 
     private func applyValues(to f: Filament) {
-        f.name = name.trimmingCharacters(in: .whitespaces)
         f.brand = brand
         f.material = material
-        f.status = status
         f.colorName = colorName.trimmingCharacters(in: .whitespaces)
         f.colorHex = colorHex
         f.colorFamily = colorFamily
