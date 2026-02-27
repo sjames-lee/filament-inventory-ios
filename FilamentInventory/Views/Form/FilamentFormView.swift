@@ -255,11 +255,13 @@ struct FilamentFormView: View {
             printTempMax = String(preset.printTempMax)
             bedTempMin = String(preset.bedTempMin)
             bedTempMax = String(preset.bedTempMax)
+            purchaseUrl = preset.productUrl ?? ""
         } else {
             printTempMin = ""
             printTempMax = ""
             bedTempMin = ""
             bedTempMax = ""
+            purchaseUrl = ""
         }
     }
 

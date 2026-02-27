@@ -12,6 +12,7 @@ final class FilamentPresetsTests: XCTestCase {
         XCTAssertEqual(preset?.printTempMax, 230)
         XCTAssertEqual(preset?.bedTempMin, 35)
         XCTAssertEqual(preset?.bedTempMax, 45)
+        XCTAssertNotNil(preset?.productUrl)
     }
 
     func testLookup_polymakerPETG_returnsPreset() {
@@ -146,6 +147,46 @@ final class FilamentPresetsTests: XCTestCase {
                                      "\(brand) \(material) bedTempMax should be positive")
                 XCTAssertGreaterThanOrEqual(preset.bedTempMax, preset.bedTempMin,
                                             "\(brand) \(material) bedTempMax should >= bedTempMin")
+            }
+        }
+    }
+
+    // MARK: - Product URL validation
+
+    func testAllPresets_haveProductUrl_exceptBambuLabHIPS() {
+        let brands = Constants.brands.filter { $0 != "Other" }
+        let materials = Constants.materials.filter { $0 != "Other" }
+
+        for brand in brands {
+            for material in materials {
+                guard let preset = FilamentPresets.lookup(brand: brand, material: material) else {
+                    continue
+                }
+
+                if brand == "Bambu Lab" && material == "HIPS" {
+                    XCTAssertNil(preset.productUrl,
+                                 "Bambu Lab HIPS should not have a product URL")
+                } else {
+                    XCTAssertNotNil(preset.productUrl,
+                                    "\(brand) \(material) should have a product URL")
+                }
+            }
+        }
+    }
+
+    func testAllProductUrls_startWithHttps() {
+        let brands = Constants.brands.filter { $0 != "Other" }
+        let materials = Constants.materials.filter { $0 != "Other" }
+
+        for brand in brands {
+            for material in materials {
+                guard let preset = FilamentPresets.lookup(brand: brand, material: material),
+                      let url = preset.productUrl else {
+                    continue
+                }
+
+                XCTAssertTrue(url.hasPrefix("https://"),
+                              "\(brand) \(material) productUrl should start with https:// but was: \(url)")
             }
         }
     }
