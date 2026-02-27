@@ -11,6 +11,8 @@ struct SettingsView: View {
     @State private var alertMessage = ""
     @State private var showAlert = false
     @State private var exportData: Data?
+    @State private var showDuplicateChoice = false
+    @State private var pendingAnalysis: DataService.ImportAnalysis?
 
     var body: some View {
         NavigationStack {
@@ -29,6 +31,23 @@ struct SettingsView: View {
                 Button("OK", role: .cancel) { }
             } message: {
                 Text(alertMessage)
+            }
+            .confirmationDialog(
+                "Duplicates Found",
+                isPresented: $showDuplicateChoice,
+                presenting: pendingAnalysis
+            ) { analysis in
+                Button("Merge Quantities") {
+                    performImport(analysis, merge: true)
+                }
+                Button("Skip Duplicates") {
+                    performImport(analysis, merge: false)
+                }
+                Button("Cancel", role: .cancel) {
+                    pendingAnalysis = nil
+                }
+            } message: { analysis in
+                Text("\(analysis.duplicates.count) duplicate\(analysis.duplicates.count == 1 ? "" : "s") found. \(analysis.newFilaments.count) new filament\(analysis.newFilaments.count == 1 ? "" : "s") will be imported.")
             }
             .fileImporter(
                 isPresented: $showImporter,
@@ -88,6 +107,41 @@ struct SettingsView: View {
         }
     }
 
+    private func performImport(_ analysis: DataService.ImportAnalysis, merge: Bool) {
+        for filament in analysis.newFilaments {
+            modelContext.insert(filament)
+        }
+
+        if merge {
+            for (existing, imported) in analysis.duplicates {
+                existing.quantity += imported.quantity
+                existing.updatedAt = Date()
+            }
+        }
+
+        try? modelContext.save()
+
+        var parts: [String] = []
+        if !analysis.newFilaments.isEmpty {
+            let count = analysis.newFilaments.count
+            parts.append("Imported \(count) new filament\(count == 1 ? "" : "s")")
+        }
+        if !analysis.duplicates.isEmpty {
+            let count = analysis.duplicates.count
+            if merge {
+                parts.append("merged quantities for \(count) existing")
+            } else {
+                parts.append("skipped \(count) duplicate\(count == 1 ? "" : "s")")
+            }
+        }
+
+        alertTitle = "Import Successful"
+        alertMessage = parts.joined(separator: ", ") + "."
+        showAlert = true
+        exportData = nil
+        pendingAnalysis = nil
+    }
+
     private func handleImport(_ result: Result<URL, Error>) {
         switch result {
         case .success(let url):
@@ -101,14 +155,22 @@ struct SettingsView: View {
 
             do {
                 let data = try Data(contentsOf: url)
-                let newFilaments = try DataService.importJSON(data)
-                for filament in newFilaments {
-                    modelContext.insert(filament)
+                let imported = try DataService.importJSON(data)
+                let analysis = DataService.analyzeImport(imported, existing: filaments)
+
+                if analysis.duplicates.isEmpty {
+                    for filament in analysis.newFilaments {
+                        modelContext.insert(filament)
+                    }
+                    try? modelContext.save()
+                    alertTitle = "Import Successful"
+                    alertMessage = "Imported \(analysis.newFilaments.count) filament\(analysis.newFilaments.count == 1 ? "" : "s")."
+                    showAlert = true
+                    exportData = nil
+                } else {
+                    pendingAnalysis = analysis
+                    showDuplicateChoice = true
                 }
-                alertTitle = "Import Successful"
-                alertMessage = "Imported \(newFilaments.count) filament\(newFilaments.count == 1 ? "" : "s")."
-                showAlert = true
-                exportData = nil
             } catch {
                 alertTitle = "Import Failed"
                 alertMessage = error.localizedDescription

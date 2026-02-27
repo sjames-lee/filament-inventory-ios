@@ -160,4 +160,101 @@ final class DataServiceTests: XCTestCase {
         XCTAssertEqual(parsed?[0]["brand"] as? String, "Hatchbox")
         XCTAssertEqual(parsed?[0]["price"] as? Double, 19.99)
     }
+
+    // MARK: - Identity Matching
+
+    func testMatchesIdentitySameFields() {
+        let a = TestHelpers.makeFilament()
+        let b = TestHelpers.makeFilament()
+        XCTAssertTrue(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityDifferentBrand() {
+        let a = TestHelpers.makeFilament(brand: "Hatchbox")
+        let b = TestHelpers.makeFilament(brand: "Prusament")
+        XCTAssertFalse(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityDifferentMaterial() {
+        let a = TestHelpers.makeFilament(material: "PLA")
+        let b = TestHelpers.makeFilament(material: "PETG")
+        XCTAssertFalse(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityDifferentColorName() {
+        let a = TestHelpers.makeFilament(colorName: "Red")
+        let b = TestHelpers.makeFilament(colorName: "Blue")
+        XCTAssertFalse(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityDifferentColorHex() {
+        let a = TestHelpers.makeFilament(colorHex: "#FF0000")
+        let b = TestHelpers.makeFilament(colorHex: "#0000FF")
+        XCTAssertFalse(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityDifferentDiameter() {
+        let a = TestHelpers.makeFilament(diameter: 1.75)
+        let b = TestHelpers.makeFilament(diameter: 2.85)
+        XCTAssertFalse(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityDifferentSpoolWeight() {
+        let a = TestHelpers.makeFilament(spoolWeight: 1000)
+        let b = TestHelpers.makeFilament(spoolWeight: 500)
+        XCTAssertFalse(a.matchesIdentity(of: b))
+    }
+
+    func testMatchesIdentityIgnoresQuantityAndPrice() {
+        let a = TestHelpers.makeFilament(quantity: 1, price: 19.99)
+        let b = TestHelpers.makeFilament(quantity: 5, price: 29.99)
+        XCTAssertTrue(a.matchesIdentity(of: b))
+    }
+
+    // MARK: - Import Analysis
+
+    func testAnalyzeImportNoDuplicates() {
+        let existing = [TestHelpers.makeFilament(brand: "Hatchbox", colorName: "Red")]
+        let imported = [TestHelpers.makeFilament(brand: "Prusament", colorName: "Blue")]
+
+        let analysis = DataService.analyzeImport(imported, existing: existing)
+        XCTAssertEqual(analysis.newFilaments.count, 1)
+        XCTAssertEqual(analysis.duplicates.count, 0)
+    }
+
+    func testAnalyzeImportAllDuplicates() {
+        let existing = [TestHelpers.makeFilament(brand: "Hatchbox", colorName: "Red")]
+        let imported = [TestHelpers.makeFilament(brand: "Hatchbox", colorName: "Red")]
+
+        let analysis = DataService.analyzeImport(imported, existing: existing)
+        XCTAssertEqual(analysis.newFilaments.count, 0)
+        XCTAssertEqual(analysis.duplicates.count, 1)
+    }
+
+    func testAnalyzeImportMixed() {
+        let existing = [TestHelpers.makeFilament(brand: "Hatchbox", colorName: "Red")]
+        let imported = [
+            TestHelpers.makeFilament(brand: "Hatchbox", colorName: "Red"),
+            TestHelpers.makeFilament(brand: "Prusament", colorName: "Blue"),
+        ]
+
+        let analysis = DataService.analyzeImport(imported, existing: existing)
+        XCTAssertEqual(analysis.newFilaments.count, 1)
+        XCTAssertEqual(analysis.duplicates.count, 1)
+        XCTAssertEqual(analysis.newFilaments[0].brand, "Prusament")
+    }
+
+    func testAnalyzeImportEmptyImported() {
+        let existing = [TestHelpers.makeFilament()]
+        let analysis = DataService.analyzeImport([], existing: existing)
+        XCTAssertEqual(analysis.newFilaments.count, 0)
+        XCTAssertEqual(analysis.duplicates.count, 0)
+    }
+
+    func testAnalyzeImportEmptyExisting() {
+        let imported = [TestHelpers.makeFilament(), TestHelpers.makeFilament()]
+        let analysis = DataService.analyzeImport(imported, existing: [])
+        XCTAssertEqual(analysis.newFilaments.count, 2)
+        XCTAssertEqual(analysis.duplicates.count, 0)
+    }
 }

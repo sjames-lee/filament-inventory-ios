@@ -16,17 +16,18 @@ struct FilamentRowView: View {
 
             // Center info
             VStack(alignment: .leading, spacing: 3) {
-                Text(filament.displayName)
-                    .font(.subheadline.weight(.semibold))
-                    .lineLimit(1)
-                    .foregroundStyle(.primary)
-
                 HStack(spacing: 6) {
                     Text(filament.brand)
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundStyle(.primary)
 
                     MaterialBadgeView(material: filament.material)
+                }
+
+                if !filament.colorName.isEmpty {
+                    Text(filament.colorName)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
                 }
             }
 

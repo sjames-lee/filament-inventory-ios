@@ -4,6 +4,7 @@ import SwiftData
 struct FilamentFormView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.dismiss) private var dismiss
+    @Query private var existingFilaments: [Filament]
 
     let filament: Filament?
 
@@ -26,6 +27,9 @@ struct FilamentFormView: View {
     @State private var tags = ""
     @State private var notes = ""
     @State private var showValidationError = false
+    @State private var showDuplicateAlert = false
+    @State private var duplicateMatch: Filament?
+    @State private var pendingFilament: Filament?
 
     private var isEdit: Bool { filament != nil }
 
@@ -64,6 +68,35 @@ struct FilamentFormView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text("Please enter a valid hex color (e.g. #3B82F6).")
+            }
+            .alert("Duplicate Filament", isPresented: $showDuplicateAlert) {
+                Button("Add to Existing") {
+                    if let match = duplicateMatch, let pending = pendingFilament {
+                        match.quantity += pending.quantity
+                        match.updatedAt = Date()
+                        try? modelContext.save()
+                    }
+                    duplicateMatch = nil
+                    pendingFilament = nil
+                    dismiss()
+                }
+                Button("Create New") {
+                    if let pending = pendingFilament {
+                        modelContext.insert(pending)
+                        try? modelContext.save()
+                    }
+                    duplicateMatch = nil
+                    pendingFilament = nil
+                    dismiss()
+                }
+                Button("Cancel", role: .cancel) {
+                    duplicateMatch = nil
+                    pendingFilament = nil
+                }
+            } message: {
+                if let match = duplicateMatch, let pending = pendingFilament {
+                    Text("A matching filament already exists (\(match.quantity) \(match.quantity == 1 ? "spool" : "spools")). Add \(pending.quantity) \(pending.quantity == 1 ? "spool" : "spools") to it instead?")
+                }
             }
             .onAppear {
                 populateFromFilament()
@@ -295,6 +328,14 @@ struct FilamentFormView: View {
                 tags: tags,
                 favorite: favorite
             )
+
+            if let match = existingFilaments.first(where: { $0.matchesIdentity(of: newFilament) }) {
+                duplicateMatch = match
+                pendingFilament = newFilament
+                showDuplicateAlert = true
+                return
+            }
+
             modelContext.insert(newFilament)
         }
 

@@ -105,4 +105,13 @@ final class Filament {
         guard let min = bedTempMin, let max = bedTempMax else { return nil }
         return "\(min) - \(max) °C"
     }
+
+    func matchesIdentity(of other: Filament) -> Bool {
+        brand == other.brand
+            && material == other.material
+            && colorName == other.colorName
+            && colorHex == other.colorHex
+            && diameter == other.diameter
+            && spoolWeight == other.spoolWeight
+    }
 }

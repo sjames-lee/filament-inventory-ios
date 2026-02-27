@@ -13,4 +13,25 @@ enum DataService {
         let codables = try decoder.decode([CodableFilament].self, from: data)
         return codables.map { $0.toFilament() }
     }
+
+    struct ImportAnalysis {
+        let newFilaments: [Filament]
+        let duplicates: [(existing: Filament, imported: Filament)]
+    }
+
+    static func analyzeImport(
+        _ importedFilaments: [Filament],
+        existing: [Filament]
+    ) -> ImportAnalysis {
+        var newFilaments: [Filament] = []
+        var duplicates: [(existing: Filament, imported: Filament)] = []
+        for imported in importedFilaments {
+            if let match = existing.first(where: { $0.matchesIdentity(of: imported) }) {
+                duplicates.append((existing: match, imported: imported))
+            } else {
+                newFilaments.append(imported)
+            }
+        }
+        return ImportAnalysis(newFilaments: newFilaments, duplicates: duplicates)
+    }
 }

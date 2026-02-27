@@ -9,7 +9,7 @@ struct MaterialBadgeView: View {
 
     var body: some View {
         Text(material)
-            .font(.caption2)
+            .font(.caption)
             .fontWeight(.medium)
             .padding(.horizontal, 8)
             .padding(.vertical, 3)
