@@ -12,8 +12,10 @@
 		17D973062203033A387CAB30 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B685C2B15CA92017AE6DA8C2 /* ContentView.swift */; };
 		1CE8CDC05BC17B3741CC29B1 /* BarChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E60C6D98508542F7CFF864F6 /* BarChartView.swift */; };
 		226D2571824BA90CEB9228B7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6FCFD5BA08165A2454BE84D7 /* Assets.xcassets */; };
+		3A39E7ABBF638FF668F148CA /* TestHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA06AB68AD01D4552D8BF067 /* TestHelpers.swift */; };
 		41196EFC7741151B26C6F799 /* FilamentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308C29895C88CE84266C332A /* FilamentFilter.swift */; };
 		4F788EC5B92C7A31A2681856 /* MaterialBadgeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 963A7B550526FE83C636BD77 /* MaterialBadgeView.swift */; };
+		594677CE923BF74FE67170EC /* FilamentFilterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05AB3E5A35B672CEEAEE3F06 /* FilamentFilterTests.swift */; };
 		63A0EF4E8E8C13674EEC6431 /* ColorSwatchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C4752015C497BCC4E9CDF1 /* ColorSwatchView.swift */; };
 		66B11D3DEABEEDF5814D13E3 /* FilamentInventoryApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A486606DCD6A3AD4C461CAEE /* FilamentInventoryApp.swift */; };
 		6CA4C86A4B60A4A1CB76C1A6 /* FilamentDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E1992A16848DFDA373BFEF /* FilamentDetailView.swift */; };
@@ -21,10 +23,12 @@
 		73055385B6A73D2FA9AAF3B1 /* CatalogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8508016FC7E8B26CA7199A1C /* CatalogView.swift */; };
 		7FC2C42EFECF3102703F279E /* FilterSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D01C09FED12F75DE2EACB61 /* FilterSheetView.swift */; };
 		8D87757CF0F3191D607E0AC1 /* Filament.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1C045864F4F96C3324E4B3A /* Filament.swift */; };
+		8EA1E9C3880D9D81C8B12D77 /* DashboardViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 857AF7E876F682AC555A4CAF /* DashboardViewModelTests.swift */; };
 		8EB61C89876E82B7A6987576 /* NeedsAttentionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDB012405079541EF32C0C8F /* NeedsAttentionListView.swift */; };
 		A3306C8A22A29026FD632437 /* TagPillsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B59AFC702A1FC6BB875DA1E3 /* TagPillsView.swift */; };
 		B0D2AC1C070EFD4E09A1AC02 /* ColorPickerRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9AE8F035F3100ECB88398B /* ColorPickerRow.swift */; };
 		BB8AB2F0EC66FD1139C02DA3 /* StockIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5906A4373C52667905E0FCC1 /* StockIndicatorView.swift */; };
+		C23D5976267654918BEC5178 /* CatalogViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7838D03821C29FB2C5A02D8C /* CatalogViewModelTests.swift */; };
 		D4E4C394FC13A6EF37F08346 /* DashboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BF331727A17B899DF1F4F9EF /* DashboardViewModel.swift */; };
 		D9B0AD7803BC556EA927F493 /* ColorHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = A19A0D476CDDC45AAE7F865B /* ColorHelpers.swift */; };
 		E6E6E81D469D35A30106E1B5 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 421AC983ABC0B414FCD2E57B /* Constants.swift */; };
@@ -32,7 +36,18 @@
 		FA6F35BE713536C3A9D658A4 /* FilamentCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 103E68E7865C18CAAE09D277 /* FilamentCard.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		EDE2577965F48A983E9CBD43 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EA82243C71D33872825906E2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2DDCD1E6C0D9DB8B235788C8;
+			remoteInfo = FilamentInventory;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		05AB3E5A35B672CEEAEE3F06 /* FilamentFilterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilamentFilterTests.swift; sourceTree = "<group>"; };
 		103E68E7865C18CAAE09D277 /* FilamentCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilamentCard.swift; sourceTree = "<group>"; };
 		15A0ECFB648A5955350E350F /* FilamentFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilamentFormView.swift; sourceTree = "<group>"; };
 		308C29895C88CE84266C332A /* FilamentFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilamentFilter.swift; sourceTree = "<group>"; };
@@ -43,7 +58,9 @@
 		6729C19127E797017D3913F6 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		6C544A513D0CFF489565E87D /* FilamentInventory.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = FilamentInventory.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FCFD5BA08165A2454BE84D7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7838D03821C29FB2C5A02D8C /* CatalogViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModelTests.swift; sourceTree = "<group>"; };
 		8508016FC7E8B26CA7199A1C /* CatalogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogView.swift; sourceTree = "<group>"; };
+		857AF7E876F682AC555A4CAF /* DashboardViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModelTests.swift; sourceTree = "<group>"; };
 		963A7B550526FE83C636BD77 /* MaterialBadgeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialBadgeView.swift; sourceTree = "<group>"; };
 		9E9AE8F035F3100ECB88398B /* ColorPickerRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerRow.swift; sourceTree = "<group>"; };
 		A19A0D476CDDC45AAE7F865B /* ColorHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorHelpers.swift; sourceTree = "<group>"; };
@@ -56,6 +73,8 @@
 		BF331727A17B899DF1F4F9EF /* DashboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardViewModel.swift; sourceTree = "<group>"; };
 		CDB012405079541EF32C0C8F /* NeedsAttentionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeedsAttentionListView.swift; sourceTree = "<group>"; };
 		E60C6D98508542F7CFF864F6 /* BarChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarChartView.swift; sourceTree = "<group>"; };
+		EA0E6A746DBA3FC10E1AD04C /* FilamentInventoryTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FilamentInventoryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA06AB68AD01D4552D8BF067 /* TestHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestHelpers.swift; sourceTree = "<group>"; };
 		FC4EF09B241B60B26713E0FD /* CatalogViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -67,6 +86,17 @@
 				15A0ECFB648A5955350E350F /* FilamentFormView.swift */,
 			);
 			path = Form;
+			sourceTree = "<group>";
+		};
+		52B5EC386B19F3101F242BCB /* FilamentInventoryTests */ = {
+			isa = PBXGroup;
+			children = (
+				7838D03821C29FB2C5A02D8C /* CatalogViewModelTests.swift */,
+				857AF7E876F682AC555A4CAF /* DashboardViewModelTests.swift */,
+				05AB3E5A35B672CEEAEE3F06 /* FilamentFilterTests.swift */,
+				FA06AB68AD01D4552D8BF067 /* TestHelpers.swift */,
+			);
+			path = FilamentInventoryTests;
 			sourceTree = "<group>";
 		};
 		5D040FCFC1BF2BB68819529F /* Catalog */ = {
@@ -83,6 +113,7 @@
 			isa = PBXGroup;
 			children = (
 				96F29FBDFC4BF819C4D209E8 /* FilamentInventory */,
+				52B5EC386B19F3101F242BCB /* FilamentInventoryTests */,
 				E8843EAF7B870ADC245572CF /* Products */,
 			);
 			sourceTree = "<group>";
@@ -166,6 +197,7 @@
 			isa = PBXGroup;
 			children = (
 				6C544A513D0CFF489565E87D /* FilamentInventory.app */,
+				EA0E6A746DBA3FC10E1AD04C /* FilamentInventoryTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -181,6 +213,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1F84D97525659422810F2CE3 /* FilamentInventoryTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6CB1F7A3B8D4E9E3AB42CC63 /* Build configuration list for PBXNativeTarget "FilamentInventoryTests" */;
+			buildPhases = (
+				A5888F79D3D9B0E758EC7322 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				562570509567E0606EF94E12 /* PBXTargetDependency */,
+			);
+			name = FilamentInventoryTests;
+			packageProductDependencies = (
+			);
+			productName = FilamentInventoryTests;
+			productReference = EA0E6A746DBA3FC10E1AD04C /* FilamentInventoryTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		2DDCD1E6C0D9DB8B235788C8 /* FilamentInventory */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6B704C7D620D613E5D51B967 /* Build configuration list for PBXNativeTarget "FilamentInventory" */;
@@ -223,6 +273,7 @@
 			projectRoot = "";
 			targets = (
 				2DDCD1E6C0D9DB8B235788C8 /* FilamentInventory */,
+				1F84D97525659422810F2CE3 /* FilamentInventoryTests */,
 			);
 		};
 /* End PBXProject section */
@@ -268,9 +319,46 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A5888F79D3D9B0E758EC7322 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C23D5976267654918BEC5178 /* CatalogViewModelTests.swift in Sources */,
+				8EA1E9C3880D9D81C8B12D77 /* DashboardViewModelTests.swift in Sources */,
+				594677CE923BF74FE67170EC /* FilamentFilterTests.swift in Sources */,
+				3A39E7ABBF638FF668F148CA /* TestHelpers.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		562570509567E0606EF94E12 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2DDCD1E6C0D9DB8B235788C8 /* FilamentInventory */;
+			targetProxy = EDE2577965F48A983E9CBD43 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1F7C4E330DE28112E7BAE5EA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sjames.FilamentInventoryTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FilamentInventory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FilamentInventory";
+			};
+			name = Release;
+		};
 		24448F60A379221394C1B6B0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -294,6 +382,24 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		47A6127C9E9650AF0FDE75B9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.sjames.FilamentInventoryTests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FilamentInventory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FilamentInventory";
 			};
 			name = Debug;
 		};
@@ -459,6 +565,15 @@
 			buildConfigurations = (
 				24448F60A379221394C1B6B0 /* Debug */,
 				A8EC90F648C52A2842C6ECC4 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6CB1F7A3B8D4E9E3AB42CC63 /* Build configuration list for PBXNativeTarget "FilamentInventoryTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				47A6127C9E9650AF0FDE75B9 /* Debug */,
+				1F7C4E330DE28112E7BAE5EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

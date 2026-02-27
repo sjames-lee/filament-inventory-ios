@@ -27,3 +27,27 @@ targets:
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
         SWIFT_VERSION: "5.0"
+
+  FilamentInventoryTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - FilamentInventoryTests
+    dependencies:
+      - target: FilamentInventory
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+        SWIFT_VERSION: "5.0"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/FilamentInventory.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/FilamentInventory"
+
+schemes:
+  FilamentInventory:
+    build:
+      targets:
+        FilamentInventory: all
+        FilamentInventoryTests: [test]
+    test:
+      targets:
+        - FilamentInventoryTests
