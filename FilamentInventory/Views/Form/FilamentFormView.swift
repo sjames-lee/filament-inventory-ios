@@ -31,6 +31,10 @@ struct FilamentFormView: View {
 
     private var isEdit: Bool { filament != nil }
 
+    private var availableMaterials: [String] {
+        isEdit ? Constants.materials : FilamentPresets.materials(for: brand)
+    }
+
     private var isValid: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty &&
         !colorName.trimmingCharacters(in: .whitespaces).isEmpty &&
@@ -69,7 +73,15 @@ struct FilamentFormView: View {
                 populateFromFilament()
                 if !isEdit { applyPresetIfNeeded() }
             }
-            .onChange(of: brand) { _, _ in applyPresetIfNeeded() }
+            .onChange(of: brand) { _, _ in
+                if !isEdit {
+                    let available = FilamentPresets.materials(for: brand)
+                    if !available.contains(material) {
+                        material = available.first ?? Constants.materials[0]
+                    }
+                }
+                applyPresetIfNeeded()
+            }
             .onChange(of: material) { _, _ in applyPresetIfNeeded() }
         }
     }
@@ -86,7 +98,7 @@ struct FilamentFormView: View {
             }
 
             Picker("Material", selection: $material) {
-                ForEach(Constants.materials, id: \.self) { Text($0) }
+                ForEach(availableMaterials, id: \.self) { Text($0) }
             }
 
             Picker("Status", selection: $status) {

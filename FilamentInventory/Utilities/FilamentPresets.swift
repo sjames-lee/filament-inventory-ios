@@ -14,12 +14,26 @@ enum FilamentPresets {
         return presets[key]
     }
 
+    static func materials(for brand: String) -> [String] {
+        brandMaterials[brand] ?? Constants.materials
+    }
+
     // MARK: - Private
 
     private struct PresetKey: Hashable {
         let brand: String
         let material: String
     }
+
+    private static let brandMaterials: [String: [String]] = {
+        var result = [String: Set<String>]()
+        for key in presets.keys {
+            result[key.brand, default: []].insert(key.material)
+        }
+        return result.mapValues { materialsSet in
+            Constants.materials.filter { materialsSet.contains($0) }
+        }
+    }()
 
     private static let presets: [PresetKey: FilamentPreset] = {
         var dict = [PresetKey: FilamentPreset]()
@@ -33,25 +47,18 @@ enum FilamentPresets {
         }
 
         // MARK: Bambu Lab
-        add("Bambu Lab", "PLA",   190, 230, 35,  45)
-        add("Bambu Lab", "PETG",  220, 260, 65,  75)
-        add("Bambu Lab", "ABS",   240, 280, 90, 100)
-        add("Bambu Lab", "ASA",   240, 280, 90, 100)
-        add("Bambu Lab", "TPU",   220, 240, 30,  35)
-        add("Bambu Lab", "Nylon", 260, 290, 80, 100)
-        add("Bambu Lab", "PC",    260, 290, 90, 110)
-        add("Bambu Lab", "PVA",   220, 250, 35,  45)
-        add("Bambu Lab", "HIPS",  240, 250, 90, 100)
-        add("Bambu Lab", "Silk",  210, 240, 35,  45)
-
-        // MARK: Hatchbox
-        add("Hatchbox", "PLA",  180, 220, 20, 60)
-        add("Hatchbox", "PLA+", 190, 220, 50, 60)
-        add("Hatchbox", "PETG", 230, 260, 80, 100)
-        add("Hatchbox", "ABS",  210, 240, 55,  85)
-        add("Hatchbox", "TPU",  190, 235, 20,  60)
-        add("Hatchbox", "Wood", 180, 220, 20,  60)
-        add("Hatchbox", "Silk", 180, 220, 20,  60)
+        add("Bambu Lab", "PLA",       190, 230, 35,  45)
+        add("Bambu Lab", "PLA Basic", 190, 230, 35,  45)
+        add("Bambu Lab", "PLA Matte", 190, 230, 35,  45)
+        add("Bambu Lab", "PETG",      220, 260, 65,  75)
+        add("Bambu Lab", "ABS",       240, 280, 90, 100)
+        add("Bambu Lab", "ASA",       240, 280, 90, 100)
+        add("Bambu Lab", "TPU",       220, 240, 30,  35)
+        add("Bambu Lab", "Nylon",     260, 290, 80, 100)
+        add("Bambu Lab", "PC",        260, 290, 90, 110)
+        add("Bambu Lab", "PVA",       220, 250, 35,  45)
+        add("Bambu Lab", "HIPS",      240, 250, 90, 100)
+        add("Bambu Lab", "Silk",      210, 240, 35,  45)
 
         // MARK: Polymaker
         add("Polymaker", "PLA",          190, 230, 25,  60)
@@ -100,14 +107,6 @@ enum FilamentPresets {
         add("Overture", "Marble",       190, 220, 50,  70)
         add("Overture", "Glow-in-Dark", 190, 220, 25,  60)
 
-        // MARK: Inland
-        add("Inland", "PLA",  190, 220, 50, 70)
-        add("Inland", "PLA+", 205, 225, 60, 80)
-        add("Inland", "PETG", 230, 250, 70, 80)
-        add("Inland", "ABS",  240, 260, 80, 110)
-        add("Inland", "TPU",  210, 240, 40,  60)
-        add("Inland", "Silk", 190, 230, 60,  80)
-
         // MARK: Sunlu
         add("Sunlu", "PLA",          200, 230, 60,  80)
         add("Sunlu", "PLA+",         215, 235, 60,  80)
@@ -119,28 +118,6 @@ enum FilamentPresets {
         add("Sunlu", "Wood",         190, 220, 25,  80)
         add("Sunlu", "Marble",       190, 230, 25,  60)
         add("Sunlu", "Glow-in-Dark", 200, 210, 50,  65)
-
-        // MARK: Eryone
-        add("Eryone", "PLA",          190, 220, 55, 70)
-        add("Eryone", "PLA+",         190, 230, 35, 60)
-        add("Eryone", "PETG",         230, 250, 70, 85)
-        add("Eryone", "ABS",          230, 270, 80, 100)
-        add("Eryone", "ASA",          230, 260, 75,  90)
-        add("Eryone", "TPU",          200, 220, 25,  60)
-        add("Eryone", "Nylon",        250, 280, 100, 120)
-        add("Eryone", "Silk",         190, 220, 60,  70)
-        add("Eryone", "Wood",         190, 220, 55,  70)
-        add("Eryone", "Carbon Fiber", 190, 220, 60,  80)
-        add("Eryone", "Marble",       190, 220, 55,  70)
-        add("Eryone", "Glow-in-Dark", 190, 220, 55,  70)
-
-        // MARK: Duramic
-        add("Duramic", "PLA",          190, 220, 30, 60)
-        add("Duramic", "PLA+",         210, 230, 25, 60)
-        add("Duramic", "PETG",         230, 250, 70, 80)
-        add("Duramic", "TPU",          210, 230, 25, 60)
-        add("Duramic", "Silk",         200, 220, 50, 60)
-        add("Duramic", "Glow-in-Dark", 210, 230, 25, 60)
 
         return dict
     }()

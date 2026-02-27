@@ -14,13 +14,13 @@ final class FilamentPresetsTests: XCTestCase {
         XCTAssertEqual(preset?.bedTempMax, 45)
     }
 
-    func testLookup_hatchboxPETG_returnsPreset() {
-        let preset = FilamentPresets.lookup(brand: "Hatchbox", material: "PETG")
+    func testLookup_polymakerPETG_returnsPreset() {
+        let preset = FilamentPresets.lookup(brand: "Polymaker", material: "PETG")
         XCTAssertNotNil(preset)
         XCTAssertEqual(preset?.printTempMin, 230)
         XCTAssertEqual(preset?.printTempMax, 260)
-        XCTAssertEqual(preset?.bedTempMin, 80)
-        XCTAssertEqual(preset?.bedTempMax, 100)
+        XCTAssertEqual(preset?.bedTempMin, 70)
+        XCTAssertEqual(preset?.bedTempMax, 80)
     }
 
     func testLookup_eSUNPLAPlus_returnsPreset() {
@@ -69,6 +69,60 @@ final class FilamentPresetsTests: XCTestCase {
                           "\(brand) should have a PLA or PLA+ preset")
         }
     }
+
+    // MARK: - materials(for:) tests
+
+    func testMaterials_bambuLab_returns12Materials() {
+        let materials = FilamentPresets.materials(for: "Bambu Lab")
+        XCTAssertEqual(materials.count, 12)
+        XCTAssertTrue(materials.contains("PLA"))
+        XCTAssertTrue(materials.contains("PLA Basic"))
+        XCTAssertTrue(materials.contains("PLA Matte"))
+        XCTAssertTrue(materials.contains("PETG"))
+        XCTAssertTrue(materials.contains("ABS"))
+        XCTAssertTrue(materials.contains("TPU"))
+        XCTAssertTrue(materials.contains("Silk"))
+        XCTAssertFalse(materials.contains("PLA+"))
+        XCTAssertFalse(materials.contains("Wood"))
+    }
+
+    func testMaterials_otherBrand_returnsAllMaterials() {
+        let materials = FilamentPresets.materials(for: "Other")
+        XCTAssertEqual(materials, Constants.materials)
+    }
+
+    func testMaterials_unknownBrand_returnsAllMaterials() {
+        let materials = FilamentPresets.materials(for: "MakerBot")
+        XCTAssertEqual(materials, Constants.materials)
+    }
+
+    func testMaterials_preservesConstantsOrdering() {
+        let materials = FilamentPresets.materials(for: "eSUN")
+        let constantsOrder = Constants.materials
+        var lastIndex = -1
+        for mat in materials {
+            guard let idx = constantsOrder.firstIndex(of: mat) else {
+                XCTFail("\(mat) not found in Constants.materials")
+                continue
+            }
+            XCTAssertGreaterThan(idx, lastIndex,
+                                 "\(mat) is out of Constants.materials order")
+            lastIndex = idx
+        }
+    }
+
+    func testMaterials_allBrandsHaveAtLeastOneMaterial() {
+        let brands = Constants.brands.filter { $0 != "Other" }
+        for brand in brands {
+            let materials = FilamentPresets.materials(for: brand)
+            XCTAssertFalse(materials.isEmpty,
+                           "\(brand) should have at least one material")
+            XCTAssertNotEqual(materials, Constants.materials,
+                              "\(brand) should return a filtered list, not all materials")
+        }
+    }
+
+    // MARK: - Temperature validation
 
     func testAllPresets_haveValidTemperatureRanges() {
         let brands = Constants.brands.filter { $0 != "Other" }

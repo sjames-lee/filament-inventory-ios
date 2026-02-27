@@ -54,14 +54,14 @@ enum SortOption: String, CaseIterable, Identifiable {
 
 enum Constants {
     static let materials: [String] = [
-        "PLA", "PLA+", "PETG", "ABS", "ASA", "TPU", "Nylon",
+        "PLA", "PLA Basic", "PLA Matte", "PLA+", "PETG", "ABS", "ASA", "TPU", "Nylon",
         "PC", "PVA", "HIPS", "Wood", "Carbon Fiber", "Silk",
         "Marble", "Glow-in-Dark", "Other"
     ]
 
     static let brands: [String] = [
-        "Bambu Lab", "Hatchbox", "Polymaker", "eSUN", "Prusament",
-        "Overture", "Inland", "Sunlu", "Eryone", "Duramic", "Other"
+        "Bambu Lab", "Polymaker", "eSUN", "Prusament",
+        "Overture", "Sunlu", "Other"
     ]
 
     static let colorFamilies: [String] = [

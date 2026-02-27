@@ -12,6 +12,11 @@ struct ContentView: View {
                 .tabItem {
                     Label("Dashboard", systemImage: "chart.bar")
                 }
+
+            SettingsView()
+                .tabItem {
+                    Label("Settings", systemImage: "gear")
+                }
         }
     }
 }
