@@ -8,6 +8,10 @@ struct FilamentRowView: View {
             // Color swatch
             RoundedRectangle(cornerRadius: 8)
                 .fill(ColorHelpers.color(from: filament.colorHex))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .strokeBorder(Color.gray.opacity(0.3), lineWidth: 1)
+                )
                 .frame(width: 44, height: 44)
 
             // Center info

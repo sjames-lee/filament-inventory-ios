@@ -50,6 +50,10 @@ struct FilamentDetailView: View {
             ColorHelpers.color(from: filament.colorHex)
                 .frame(height: 200)
                 .frame(maxWidth: .infinity)
+                .overlay(
+                    Rectangle()
+                        .strokeBorder(Color.gray.opacity(0.3), lineWidth: 1)
+                )
 
             VStack(spacing: 4) {
                 Text(filament.colorName)
