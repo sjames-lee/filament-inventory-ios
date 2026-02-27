@@ -65,7 +65,12 @@ struct FilamentFormView: View {
             } message: {
                 Text("Please fill in name, color name, and a valid hex color.")
             }
-            .onAppear { populateFromFilament() }
+            .onAppear {
+                populateFromFilament()
+                if !isEdit { applyPresetIfNeeded() }
+            }
+            .onChange(of: brand) { _, _ in applyPresetIfNeeded() }
+            .onChange(of: material) { _, _ in applyPresetIfNeeded() }
         }
     }
 
@@ -244,6 +249,21 @@ struct FilamentFormView: View {
         purchaseUrl = f.purchaseUrl ?? ""
         tags = f.tags
         notes = f.notes ?? ""
+    }
+
+    private func applyPresetIfNeeded() {
+        guard !isEdit else { return }
+        if let preset = FilamentPresets.lookup(brand: brand, material: material) {
+            printTempMin = String(preset.printTempMin)
+            printTempMax = String(preset.printTempMax)
+            bedTempMin = String(preset.bedTempMin)
+            bedTempMax = String(preset.bedTempMax)
+        } else {
+            printTempMin = ""
+            printTempMax = ""
+            bedTempMin = ""
+            bedTempMax = ""
+        }
     }
 
     private func save() {
